@@ -101,10 +101,36 @@ class _ResultPageState extends State<ResultPage>
                               const Text('⭐', style: TextStyle(fontSize: 36)),
                         ),
                       ),
-                      if (_stars == 0)
-                        const Text('Yaxshi urinish! 💪',
-                            style:
-                                TextStyle(fontSize: 16, color: Colors.black45)),
+                      const SizedBox(height: 24),
+                      // Sticker Badge
+                      Container(
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: color.withOpacity(0.3),
+                              blurRadius: 15,
+                              spreadRadius: 2,
+                            )
+                          ],
+                        ),
+                        child: Column(
+                          children: [
+                            Text(_info.emoji, style: const TextStyle(fontSize: 50)),
+                            const SizedBox(height: 4),
+                            const Text(
+                              'Yangi Stiker!',
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
                       const SizedBox(height: 40),
                       Row(
                         children: [

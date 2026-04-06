@@ -6,11 +6,12 @@ import 'package:multiplication_app/di/service_locator.dart';
 import 'package:multiplication_app/presentation/result/result_page.dart';
 import 'package:multiplication_app/presentation/widgets/answer_option_grid.dart';
 import 'package:multiplication_app/presentation/widgets/learn_app_bar.dart';
+import 'package:multiplication_app/presentation/widgets/mascot_feedback.dart';
 import 'package:multiplication_app/presentation/widgets/question_card.dart';
 import 'package:multiplication_app/presentation/widgets/streak_badge.dart';
-import 'package:multiplication_app/presentation/widgets/table_reference_panel.dart';
 
 import '../../../domain/entities/table_info.dart';
+import '../widgets/table_reference_panel.dart';
 import 'cubit/learn_cubit.dart';
 
 class LearnPage extends StatelessWidget {
@@ -144,6 +145,11 @@ class _LearnViewState extends State<_LearnView>
                           tableInfo: widget.tableInfo,
                         ),
                       ),
+
+                      const SizedBox(height: 12),
+
+                      // Mascot Feedback
+                      MascotFeedback(status: state.answerStatus),
 
                       const SizedBox(height: 12),
 

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:multiplication_app/core/router/app_router.dart';
-import 'package:multiplication_app/di/service_locator.dart';
 import 'package:multiplication_app/presentation/widgets/table_card.dart';
 
 import '../../domain/entities/table_info.dart';
@@ -12,10 +11,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (_) => sl<HomeCubit>()..loadTables(),
-      child: const _HomeView(),
-    );
+    return const _HomeView();
   }
 }
 
@@ -104,6 +100,61 @@ class _HomeViewState extends State<_HomeView>
                 ),
               ),
               const SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                child: GestureDetector(
+                  onTap: () {
+                    // Logic for Mixed Challenge (random table number)
+                    final randomTable = TableInfo(
+                      number: 2 + (DateTime.now().millisecond % 9),
+                      progress: 0,
+                    );
+                    _openTable(context, randomTable);
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(20),
+                    decoration: BoxDecoration(
+                      color: Colors.amber.shade400,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.amber.shade700.withOpacity(0.4),
+                          blurRadius: 15,
+                          offset: const Offset(0, 8),
+                        )
+                      ],
+                    ),
+                    child: Row(
+                      children: [
+                        const Text('🎲', style: TextStyle(fontSize: 40)),
+                        const SizedBox(width: 16),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                'Aralash Mashqlar',
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black87,
+                                ),
+                              ),
+                              Text(
+                                'Hamma jadvallardan savollar!',
+                                style: TextStyle(color: Colors.black54),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Icon(Icons.arrow_forward_ios_rounded,
+                            color: Colors.black54),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 20),
               Expanded(
                 child: BlocBuilder<HomeCubit, HomeState>(
                   builder: (context, state) {

@@ -25,17 +25,43 @@ class GenerateGameStepUseCase {
   final Random _rng = Random();
 
   GameStep call(int tableNumber, int multiplier) {
-    final correct = tableNumber * multiplier;
-    final Set<int> opts = {correct};
+    // Randomly choose question type
+    final type = QuestionType.values[_rng.nextInt(QuestionType.values.length)];
+    
+    int correct;
+    Set<int> opts;
 
-    while (opts.length < AppConstants.optionsCount) {
-      final fake = tableNumber * (_rng.nextInt(10) + 1);
-      if (fake != correct) opts.add(fake);
+    switch (type) {
+      case QuestionType.result:
+        correct = tableNumber * multiplier;
+        opts = {correct};
+        while (opts.length < AppConstants.optionsCount) {
+          final fake = tableNumber * (_rng.nextInt(10) + 1);
+          opts.add(fake);
+        }
+        break;
+      case QuestionType.multiplier:
+        correct = multiplier;
+        opts = {correct};
+        while (opts.length < AppConstants.optionsCount) {
+          final fake = _rng.nextInt(10) + 1;
+          opts.add(fake);
+        }
+        break;
+      case QuestionType.multiplicand:
+        correct = tableNumber;
+        opts = {correct};
+        while (opts.length < AppConstants.optionsCount) {
+          final fake = _rng.nextInt(10) + 1;
+          opts.add(fake);
+        }
+        break;
     }
 
     return GameStep(
       tableNumber: tableNumber,
       multiplier: multiplier,
+      type: type,
       options: opts.toList()..shuffle(_rng),
     );
   }

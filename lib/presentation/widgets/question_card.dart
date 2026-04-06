@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:multiplication_app/domain/entities/game_step.dart';
 import 'package:multiplication_app/presentation/learn/cubit/learn_cubit.dart';
 
 import '../../../domain/entities/table_info.dart';
@@ -84,22 +85,14 @@ class _QuestionCardState extends State<QuestionCard>
               ),
               const SizedBox(height: 12),
               FittedBox(
-                child: Text(
-                  '${step.tableNumber} × ${step.multiplier} = ?',
-                  style: const TextStyle(
-                    fontSize: 44,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                    letterSpacing: 2,
-                  ),
-                ),
+                child: _buildQuestionText(step),
               ),
               if (widget.state.showAnswer) ...[
                 const SizedBox(height: 8),
                 Text(
-                  '= ${step.correctAnswer}',
+                  'To\'g\'ri javob: ${step.correctAnswer}',
                   style: const TextStyle(
-                    fontSize: 34,
+                    fontSize: 24,
                     color: Colors.white70,
                     fontWeight: FontWeight.w500,
                   ),
@@ -110,5 +103,50 @@ class _QuestionCardState extends State<QuestionCard>
         ),
       ),
     );
+  }
+
+  Widget _buildQuestionText(dynamic step) {
+    const style = TextStyle(
+      fontSize: 44,
+      fontWeight: FontWeight.bold,
+      color: Colors.white,
+      letterSpacing: 2,
+    );
+
+    final highlightStyle = style.copyWith(
+      color: Colors.amberAccent,
+      decoration: TextDecoration.underline,
+    );
+
+    switch (step.type) {
+      case QuestionType.result:
+        return Text.rich(
+          TextSpan(children: [
+            TextSpan(
+                text: '${step.tableNumber} × ${step.multiplier} = ',
+                style: style),
+            TextSpan(text: '?', style: highlightStyle),
+          ]),
+        );
+      case QuestionType.multiplier:
+        return Text.rich(
+          TextSpan(children: [
+            TextSpan(text: '${step.tableNumber} × ', style: style),
+            TextSpan(text: '?', style: highlightStyle),
+            TextSpan(text: ' = ${step.result}', style: style),
+          ]),
+        );
+      case QuestionType.multiplicand:
+        return Text.rich(
+          TextSpan(children: [
+            TextSpan(text: '?', style: highlightStyle),
+            TextSpan(
+                text: ' × ${step.multiplier} = ${step.result}', style: style),
+          ]),
+        );
+      default:
+        return Text('${step.tableNumber} × ${step.multiplier} = ?',
+            style: style);
+    }
   }
 }
